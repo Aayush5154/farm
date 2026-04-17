@@ -20,7 +20,8 @@ const sensorSchema = new mongoose.Schema({
 
 const Sensor = mongoose.model('Sensor', sensorSchema);
 
-app.post('/api/data', async (req, res) => {
+// CHANGED: Removed '/api' prefix. Vercel routes this to /api/data automatically.
+app.post('/data', async (req, res) => {
   try {
     const newData = new Sensor(req.body);
     await newData.save();
@@ -32,7 +33,8 @@ app.post('/api/data', async (req, res) => {
   }
 });
 
-app.get('/api/data', async (req, res) => {
+// CHANGED: Removed '/api' prefix. 
+app.get('/data', async (req, res) => {
   try {
     const data = await Sensor.find().sort({ timestamp: -1 }).limit(10);
     res.status(200).json(data);
@@ -42,11 +44,10 @@ app.get('/api/data', async (req, res) => {
   }
 });
 
-app.get('/api/health', (req, res) => {
+// CHANGED: Removed '/api' prefix.
+app.get('/health', (req, res) => {
   res.send("Standard Node Backend is Live!");
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 Server running continuously on http://localhost:${PORT}`);
-});
+// CHANGED: Removed app.listen() and replaced with the Vercel serverless export
+module.exports = app;
