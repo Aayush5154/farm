@@ -1,0 +1,28 @@
+{
+  "name": "start",
+  "version": "1.0.0",
+  "description": "��#\u0000 \u0000f\u0000a\u0000r\u0000m\u0000\r\u0000 \u0000",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Aayush5154/farm.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Aayush5154/farm/issues"
+  },
+  "homepage": "https://github.com/Aayush5154/farm#readme",
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "mongodb": "^7.1.1",
+    "mongoose": "^9.4.1"
+  }
+}
