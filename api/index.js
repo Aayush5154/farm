@@ -8,8 +8,8 @@ const app = express();
 app.use(express.json());
 
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("SUCCESS: Connected to MongoDB Atlas!"))
-  .catch(err => console.error(" ERROR: MongoDB Connection Failed:", err));
+  .then(() => console.log("Connected to MongoDB Atlas"))
+  .catch(err => console.error("MongoDB Connection Failed:", err));
 
 const sensorSchema = new mongoose.Schema({
   temp: Number,
@@ -20,38 +20,32 @@ const sensorSchema = new mongoose.Schema({
 
 const Sensor = mongoose.model('Sensor', sensorSchema);
 
-// FIXED: Added '/api' prefix back so Express catches the Vercel rewrite correctly
 app.post('/api/data', async (req, res) => {
   try {
     const newData = new Sensor(req.body);
     await newData.save();
     console.log("Received and saved data:", req.body);
-    res.status(201).json({ message: "Data saved to Atlas!" });
+    res.status(201).json({ message: "Data saved to Atlas" });
   } catch (err) {
-    // VERCEL LOG BYPASS: Send the exact error to the ESP32
-    res.status(500).json({ 
-      error: "MongoDB Crash", 
-      details: err.message,
-      name: err.name 
+    res.status(500).json({
+      error: "MongoDB Error",
+      details: err.message
     });
   }
 });
 
-// FIXED: Added '/api' prefix back
 app.get('/api/data', async (req, res) => {
   try {
     const data = await Sensor.find().sort({ timestamp: -1 }).limit(10);
     res.status(200).json(data);
   } catch (err) {
-    console.error("Error fetching from DB:", err);
+    console.error("Error fetching data:", err);
     res.status(500).json({ error: "Error fetching data" });
   }
 });
 
-// FIXED: Added '/api' prefix back
 app.get('/api/health', (req, res) => {
-  res.send("Standard Node Backend is Live!");
+  res.send("Backend is live");
 });
 
-// Vercel serverless export
 module.exports = app;
