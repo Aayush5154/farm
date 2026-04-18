@@ -28,8 +28,12 @@ app.post('/api/data', async (req, res) => {
     console.log("Received and saved data:", req.body);
     res.status(201).json({ message: "Data saved to Atlas!" });
   } catch (err) {
-    console.error("Error saving to DB:", err);
-    res.status(500).json({ error: "Error saving data" });
+    // VERCEL LOG BYPASS: Send the exact error to the ESP32
+    res.status(500).json({ 
+      error: "MongoDB Crash", 
+      details: err.message,
+      name: err.name 
+    });
   }
 });
 
